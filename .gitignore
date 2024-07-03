@@ -1,0 +1,7 @@
+**/.idea/**
+**/.vs/**
+**/bin
+**/obj
+/coverage
+**/TestResults
+**/reports

@@ -23,6 +23,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.Identity", "Carv
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{235398F1-693E-456E-900D-D31C1E3F3803}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cert-creation", "cert-creation", "{ACEDE3A0-83BC-4CA8-9503-027B9EB2CD8A}"
+	ProjectSection(SolutionItems) = preProject
+		cert-creation\cr-id-local.conf = cert-creation\cr-id-local.conf
+		cert-creation\cr-id-local.crt = cert-creation\cr-id-local.crt
+		cert-creation\cr-id-local.key = cert-creation\cr-id-local.key
+		cert-creation\cr-id-local.pfx = cert-creation\cr-id-local.pfx
+		cert-creation\readme.md = cert-creation\readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

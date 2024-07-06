@@ -50,7 +50,11 @@ public static class Config
             ClientId = "carvedrock-webapp", //interactive.confidential
             ClientName = "CarvedRock confidential client (Code with PKCE)",
 
-            RedirectUris = { "https://localhost:7224/signin-oidc" },
+            RedirectUris = 
+            { 
+                "https://localhost:7224/signin-oidc",
+                "https://localhost:32071/signin-oidc",
+            },
             PostLogoutRedirectUris = { "https://notused" },
 
             ClientSecrets = { new Secret("secret".Sha256()) },

@@ -9,7 +9,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__CarvedRockPostgres=Host=pgsql;Port=5432;Database=carvedrock;Username=postgres;Password=C0nt*inersAreGREAT!;
-      - Auth__Authority=https://localhost:32091
+      - Auth__Authority=https://carvedrock.identity:8099
       - SeqAddress=http://seq:5341
     ports:      
       - '32081:8081' 
@@ -17,17 +17,17 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
 
-  carvedrock.identity:
+  carvedrock.identity:  ## need a host file entry for this one
     image: ${DOCKER_REGISTRY-}carvedrockidentity
     build:
       context: .
       dockerfile: CarvedRock.Identity/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTPS_PORTS=8091
       - SeqAddress=http://seq:5341
+      - UseCustomLocalCert=true
     ports:      
-      - '32091:8091'  
+      - '8099:8099' # These ports need to be the same since the webapp container will open browser on host 
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -42,7 +42,9 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8071
       - SeqAddress=http://seq:5341
       - CarvedRock__ApiBaseUrl=http://carvedrock.api:8080
-      - Auth__Authority=https://carvedrock.identity:8091
+      - Auth__Authority=https://carvedrock.identity:8099
+      - CarvedRock__EmailHost=smtp4dev
+      - CarvedRock__EmailPort=25 
     ports:      
       - '32071:8071' 
     volumes:

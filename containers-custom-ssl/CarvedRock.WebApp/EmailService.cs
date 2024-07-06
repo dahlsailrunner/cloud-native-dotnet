@@ -22,16 +22,7 @@ public class EmailService : IEmailSender
             IsBodyHtml = true,
             From = new MailAddress("e-commerce@carvedrock.com", "Carved Rock Shop"),
             To = { email }
-        };
-        var mailMessage2 = new MailMessage
-        {
-            Body = htmlMessage,
-            Subject = subject,
-            IsBodyHtml = true,
-            From = new MailAddress("e-commerce@carvedrock.com", "Carved Rock Shop"),
-            To = { "erik.dahl@realpage.com" }
-        };
-        await _client.SendMailAsync(mailMessage2);
+        };        
 
         await _client.SendMailAsync(mailMessage);
     }

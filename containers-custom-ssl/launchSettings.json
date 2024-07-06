@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "carvedrock.webapp",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "carvedrock.api": "StartDebugging",
+        "carvedrock.identity": "StartDebugging",
+        "carvedrock.webapp": "StartDebugging",
+        "pgsql": "StartWithoutDebugging",
+        "seq": "StartWithoutDebugging",
+        "smtp4dev": "StartWithoutDebugging"
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52B78FD2-1E54-4EE1-897C-F3BD6F4945A5}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Directory.Packages.props = Directory.Packages.props
 		readme.md = readme.md
 	EndProjectSection
 EndProject
@@ -21,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.Core", "CarvedRo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock.Identity", "CarvedRock.Identity\CarvedRock.Identity.csproj", "{E06C40B2-3BE6-407C-BC34-22310363415D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarvedRock-Aspire.AppHost", "CarvedRock-Aspire.AppHost\CarvedRock-Aspire.AppHost.csproj", "{4C39F604-D72C-4ADA-B70A-3F82478B20AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock-Aspire.AppHost", "CarvedRock-Aspire.AppHost\CarvedRock-Aspire.AppHost.csproj", "{4C39F604-D72C-4ADA-B70A-3F82478B20AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock-Aspire.ServiceDefaults", "CarvedRock-Aspire.ServiceDefaults\CarvedRock-Aspire.ServiceDefaults.csproj", "{39720E52-1FFD-4B67-857F-5A1E84EEACDE}"
 EndProject

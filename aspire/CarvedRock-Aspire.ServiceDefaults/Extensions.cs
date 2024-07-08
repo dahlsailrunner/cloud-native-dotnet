@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using Serilog;
+using Serilog.Enrichers.Span;
+using Serilog.Exceptions;
 
 namespace Microsoft.Extensions.Hosting;
 
@@ -14,8 +17,44 @@ namespace Microsoft.Extensions.Hosting;
 // To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
 public static class Extensions
 {
+    public static IHostBuilder AddCustomSerilog(this WebApplicationBuilder builder)
+    {        
+        return builder.Host.UseSerilog((context, loggerConfig) =>
+        {
+            loggerConfig
+                .ReadFrom.Configuration(context.Configuration)
+                .WriteTo.Console()
+                .Enrich.WithExceptionDetails()
+                .Enrich.FromLogContext()
+                .Enrich.With<ActivityEnricher>();
+
+            var otlpExporterEndpoint = context.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
+            if (string.IsNullOrEmpty(otlpExporterEndpoint)) return;
+
+            loggerConfig
+                .WriteTo.OpenTelemetry(options =>
+                {
+                    options.Endpoint = otlpExporterEndpoint;
+                    options.ResourceAttributes.Add("service.name", builder.Configuration["OTEL_SERVICE_NAME"]!);
+                    var headers = builder.Configuration["OTEL_EXPORTER_OTLP_HEADERS"]?.Split(',') ?? [];
+                    foreach (var header in headers)
+                    {
+                        var (key, value) = header.Split('=') switch
+                        {
+                        [string k, string v] => (k, v),
+                            var v => throw new Exception($"Invalid header format {v}")
+                        };
+
+                        options.Headers.Add(key, value);
+                    }
+                });
+        });
+    }
+
     public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
     {
+        (builder as WebApplicationBuilder)?.AddCustomSerilog();
+
         builder.ConfigureOpenTelemetry();
 
         builder.AddDefaultHealthChecks();

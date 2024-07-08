@@ -1,8 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
-using Serilog.Exceptions;
-using Serilog.Enrichers.Span;
 using CarvedRock.WebApp;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -11,36 +8,8 @@ public partial class Program {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.AddServiceDefaults();
-        builder.Logging.ClearProviders();
-
-        builder.Host.UseSerilog((context, loggerConfig) =>
-        {
-            loggerConfig
-            .ReadFrom.Configuration(context.Configuration)
-            .WriteTo.Console()
-            .Enrich.WithExceptionDetails()
-            .Enrich.FromLogContext()
-            .Enrich.With<ActivityEnricher>()
-            .WriteTo.Seq("http://localhost:5341")
-            .WriteTo.OpenTelemetry(options =>
-             {
-                 options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]!;
-                 options.ResourceAttributes.Add("service.name", builder.Configuration["OTEL_SERVICE_NAME"]!);
-                 var headers = builder.Configuration["OTEL_EXPORTER_OTLP_HEADERS"]?.Split(',') ?? [];
-                 foreach (var header in headers)
-                 {
-                     var (key, value) = header.Split('=') switch
-                     {
-                     [string k, string v] => (k, v),
-                         var v => throw new Exception($"Invalid header format {v}")
-                     };
-
-                     options.Headers.Add(key, value);
-                 }
-             });
-        });
-
+        builder.AddServiceDefaults(); // serilog configured in here
+        
         var authority = builder.Configuration.GetValue<string>("Auth:Authority"); 
 
         JwtSecurityTokenHandler.DefaultMapInboundClaims = false;

@@ -1,9 +1,9 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("postgres");
-var carvedrockdb = postgres.AddDatabase("CarvedRockPostgres");
+var carvedrockdb = builder.AddPostgres("postgres")
+                            .AddDatabase("CarvedRockPostgres");
 
-var emailService = builder.AddSmtp4Dev("SmtpUri");
+var emailService = builder.AddSmtp4Dev("SmtpUri");  // custom extension
 
 var identityserver = builder.AddProject<Projects.CarvedRock_Identity>("carvedrock-identity");
 var identityEndpoint = identityserver.GetEndpoint("https");

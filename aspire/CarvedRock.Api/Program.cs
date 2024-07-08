@@ -9,7 +9,6 @@ using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using CarvedRock.Domain.Mapping;
 using FluentValidation;
@@ -18,22 +17,39 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddHealthChecks()
-            .AddDbContextCheck<LocalContext>();
+        var builder = WebApplication.CreateBuilder(args);        
+        builder.AddServiceDefaults();
 
-        builder.Logging.ClearProviders();
+        var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
+
+        var x = builder.Configuration["AppMeta:AppName"];
 
         builder.Host.UseSerilog((context, loggerConfig) =>
         {
             loggerConfig
             .ReadFrom.Configuration(context.Configuration)
-            //.WriteTo.Console()
+            .WriteTo.Console()
             .Enrich.WithExceptionDetails()
             .Enrich.FromLogContext()
             .Enrich.With<ActivityEnricher>()
-            .WriteTo.Seq("http://localhost:5341");
-        });
+            //.WriteTo.Seq("http://localhost:5341")
+            .WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]!;
+                options.ResourceAttributes.Add("service.name", builder.Configuration["OTEL_SERVICE_NAME"]!);
+                var headers = builder.Configuration["OTEL_EXPORTER_OTLP_HEADERS"]?.Split(',') ?? [];
+                foreach (var header in headers)
+                {
+                    var (key, value) = header.Split('=') switch
+                    {
+                    [string k, string v] => (k, v),
+                        var v => throw new Exception($"Invalid header format {v}")
+                    };
+
+                    options.Headers.Add(key, value);
+                }
+            });
+        });        
 
         builder.Services.AddProblemDetails(opts => // built-in problem details support
             opts.CustomizeProblemDetails = (ctx) =>
@@ -73,9 +89,11 @@ internal class Program
         builder.Services.AddScoped<IProductLogic, ProductLogic>();
 
         // Postgres -----------------------------
-        builder.Services.AddDbContext<LocalContext>(options => options
-            .UseNpgsql(builder.Configuration.GetConnectionString("CarvedRockPostgres"))
-            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+        //builder.Services.AddDbContext<LocalContext>(options => options
+        //    .UseNpgsql(builder.Configuration.GetConnectionString("CarvedRockPostgres"))
+        //    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
+        builder.AddNpgsqlDbContext<LocalContext>("CarvedRockPostgres");
 
         // SQL Server ---------------------------
         //builder.Services.AddDbContext<LocalContext>(options => options
@@ -107,8 +125,6 @@ internal class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers().RequireAuthorization();
-
-        app.MapHealthChecks("health").AllowAnonymous();
 
         app.Run();
 

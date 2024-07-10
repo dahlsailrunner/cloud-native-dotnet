@@ -13,16 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />    
-    <PackageReference Include="AspNetCore.HealthChecks.OpenIdConnectServer" Version="7.0.0" />    
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect"/>    
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
 
     <!-- Serilog / Seq -->
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />    
-    <PackageReference Include="Serilog.Sinks.Seq" Version="6.0.0" />
-    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-    <PackageReference Include="Serilog.Enrichers.Span" Version="3.1.0" />   
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Seq" />
+    <PackageReference Include="Serilog.Exceptions" />
+    <PackageReference Include="Serilog.Enrichers.Span" />   
   </ItemGroup>
 
   <ItemGroup>

@@ -17,9 +17,13 @@ docker run --name seq -d --restart unless-stopped -e ACCEPT_EULA=Y -p 5341:80 da
 docker pull postgres
 docker run -d --name carvedrock-postgres -e POSTGRES_PASSWORD=carvedrock -p 5432:5432 postgres
 ```
-To see logs, you can navigate to [http://localhost:5341](http://localhost:5341).
 
-To see emails, you can navigate to [http://localhost:3000](http://localhost:3000).
+### Application URLs:
+* User Interface / Web App: [https://localhost:7224/](https://localhost:7224/)
+* API: [https://localhost:7213/](https://localhost:7213/)
+* IdentityServer / Authentication: [https://localhost:5001/](https://localhost:5001/)
+* Logs / Seq: [http://localhost:5341](http://localhost:5341)
+* Email browser: [http://localhost:3000](http://localhost:3000)
 
 If you want to explore the data, the Postgres connection string is in the `appSettings.json` file of the API project.
 
@@ -57,7 +61,7 @@ extension should probably be installed (it includes some other extensions):
 
 - [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
 
-Then run the API project and the UI project.
+Then run the API project, the UI project, and the Identity project.
 
 ## Data and EF Core Migrations
 

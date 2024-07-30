@@ -11,7 +11,6 @@ public class LocalContext(DbContextOptions<LocalContext> options) : DbContext(op
     [ExcludeFromCodeCoverage]
     public void MigrateAndCreateData()
     {
-        Database.EnsureDeleted();
         Database.Migrate();
 
         if (Products.Any())

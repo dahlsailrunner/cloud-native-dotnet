@@ -73,6 +73,10 @@ public static class Extensions
         return builder;
     }
 
+    private static readonly string[] _excludeFromTraces = [
+        "aspnetcore-browser-refresh.js",
+        "browserLink",
+       ];
     public static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
     {
         builder.Logging.AddOpenTelemetry(logging =>
@@ -90,10 +94,21 @@ public static class Extensions
             })
             .WithTracing(tracing =>
             {
-                tracing.AddAspNetCoreInstrumentation()
-                    // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
-                    //.AddGrpcClientInstrumentation()
-                    .AddHttpClientInstrumentation();
+                tracing.AddAspNetCoreInstrumentation(options =>
+                {
+                    options.Filter = (httpContext) =>
+                    {
+                        var excludeFromTraces = _excludeFromTraces;
+                        if (excludeFromTraces.Any(ex => httpContext.Request.Path.Value?.Contains(ex) ?? false))
+                        {
+                            return false;
+                        }
+                        return true;
+                    };
+                })
+                // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
+                //.AddGrpcClientInstrumentation()
+                .AddHttpClientInstrumentation();
             });
 
         builder.AddOpenTelemetryExporters();

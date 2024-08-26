@@ -26,7 +26,9 @@ internal static class HostingExtensions
     }
     
     public static WebApplication ConfigurePipeline(this WebApplication app)
-    { 
+    {
+        app.MapDefaultEndpoints();
+
         app.UseSerilogRequestLogging();
     
         if (app.Environment.IsDevelopment())

@@ -18,7 +18,7 @@ public class EmailService(MailKitClientFactory factory) : IEmailSender
     {   
         var client = await factory.GetSmtpClientAsync(); // added with MailKit
 
-        var message = new MailMessage
+        using var message = new MailMessage
         {
             Body = htmlMessage,
             Subject = subject,

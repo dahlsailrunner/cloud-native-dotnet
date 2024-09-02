@@ -43,6 +43,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<IProductService, ProductService>();
+
+builder.AddMailKitClient("SmtpUri"); // Added with MailKit
 builder.Services.AddScoped<IEmailSender, EmailService>();
 
 var app = builder.Build();

@@ -11,6 +11,11 @@ if you don't already have the Postgres and Smtp4Dev container images downloaded.
 The Aspire Dashboard will be launched and that will have links for the different
 projects.  Start by clicking the link for the WebApp project!
 
+## MailKit Client
+
+Added `MailKit.Client` project based on the tutorial here:
+https://learn.microsoft.com/en-us/dotnet/aspire/extensibility/custom-integration
+
 ## Features
 
 This is a simple e-commerce application that has a few features

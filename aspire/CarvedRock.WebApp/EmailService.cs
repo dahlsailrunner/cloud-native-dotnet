@@ -1,20 +1,24 @@
 ﻿using System.Net.Mail;
+using MailKit.Client;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using MimeKit;
 
 namespace CarvedRock.WebApp;
 
-public class EmailService : IEmailSender
+public class EmailService(MailKitClientFactory factory) : IEmailSender
 {
-    private readonly SmtpClient _client;
-    public EmailService(IConfiguration config)
-    {
-        var smtpUri = new Uri(config.GetConnectionString("SmtpUri")!);
-        _client = new() { Host = smtpUri.Host, Port = smtpUri.Port  };
-    }
+    //private readonly SmtpClient _client;
+    //public EmailService(IConfiguration config)
+    //{
+    //    var smtpUri = new Uri(config.GetConnectionString("SmtpUri")!);
+    //    _client = new() { Host = smtpUri.Host, Port = smtpUri.Port  };
+    //}
 
     public async Task SendEmailAsync(string email, string subject, string htmlMessage)
-    {       
-        var mailMessage = new MailMessage
+    {   
+        var client = await factory.GetSmtpClientAsync(); // added with MailKit
+
+        var message = new MailMessage
         {
             Body = htmlMessage,
             Subject = subject,
@@ -23,6 +27,7 @@ public class EmailService : IEmailSender
             To = { email }
         };        
 
-        await _client.SendMailAsync(mailMessage);
+        //await _client.SendMailAsync(mailMessage);
+        await client.SendAsync(MimeMessage.CreateFromMailMessage(message));
     }
 }

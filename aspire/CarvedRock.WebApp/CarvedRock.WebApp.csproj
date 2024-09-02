@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CarvedRock-Aspire.ServiceDefaults\CarvedRock-Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\CarvedRock.Core\CarvedRock.Core.csproj" />
+    <ProjectReference Include="..\MailKit.Client\MailKit.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock-Aspire.AppHost",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarvedRock-Aspire.ServiceDefaults", "CarvedRock-Aspire.ServiceDefaults\CarvedRock-Aspire.ServiceDefaults.csproj", "{39720E52-1FFD-4B67-857F-5A1E84EEACDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailKit.Client", "MailKit.Client\MailKit.Client.csproj", "{495BAB9B-A686-489B-9E20-CBC2E634A268}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{39720E52-1FFD-4B67-857F-5A1E84EEACDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39720E52-1FFD-4B67-857F-5A1E84EEACDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39720E52-1FFD-4B67-857F-5A1E84EEACDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495BAB9B-A686-489B-9E20-CBC2E634A268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495BAB9B-A686-489B-9E20-CBC2E634A268}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495BAB9B-A686-489B-9E20-CBC2E634A268}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495BAB9B-A686-489B-9E20-CBC2E634A268}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

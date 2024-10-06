@@ -21,6 +21,7 @@
     <PackageReference Include="Serilog.Enrichers.Span" />
     <PackageReference Include="Serilog.Exceptions" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
+    <PackageReference Include="System.Formats.Asn1" />
   </ItemGroup>
 
 </Project>

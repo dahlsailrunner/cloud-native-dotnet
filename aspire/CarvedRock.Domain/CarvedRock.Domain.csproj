@@ -8,6 +8,7 @@
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="System.Formats.Asn1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CarvedRock.Core\CarvedRock.Core.csproj" />

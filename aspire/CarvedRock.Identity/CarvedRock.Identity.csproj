@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Duende.IdentityServer" />
+		<PackageReference Include="System.Formats.Asn1" />
 	</ItemGroup>
 
 	<ItemGroup>

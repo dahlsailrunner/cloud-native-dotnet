@@ -9,5 +9,9 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Formats.Asn1" />
+  </ItemGroup>
   
 </Project>

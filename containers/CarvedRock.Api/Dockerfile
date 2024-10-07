@@ -13,7 +13,7 @@ COPY ["CarvedRock.Api/CarvedRock.Api.csproj", "CarvedRock.Api/"]
 COPY ["CarvedRock.Domain/CarvedRock.Domain.csproj", "CarvedRock.Domain/"]
 COPY ["CarvedRock.Core/CarvedRock.Core.csproj", "CarvedRock.Core/"]
 COPY ["CarvedRock.Data/CarvedRock.Data.csproj", "CarvedRock.Data/"]
-RUN dotnet restore "./CarvedRock.Api/CarvedRock.Api.csproj"
+# RUN dotnet restore "./CarvedRock.Api/CarvedRock.Api.csproj" // causes a failure on package restores (maybe due to CPM?)
 COPY . .
 WORKDIR "/src/CarvedRock.Api"
 RUN dotnet build "./CarvedRock.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build

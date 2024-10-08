@@ -14,7 +14,7 @@ projects.  Start by clicking the link for the WebApp project!
 ## MailKit Client
 
 Added `MailKit.Client` project based on the tutorial here:
-https://learn.microsoft.com/en-us/dotnet/aspire/extensibility/custom-integration
+<https://learn.microsoft.com/en-us/dotnet/aspire/extensibility/custom-integration>
 
 ## Features
 

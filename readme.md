@@ -219,3 +219,55 @@ locally - it's really fast, and it's only your data - not
 your teammates'.  But this method can help you confirm
 your deployment setup and configuration before you
 actually deploy.
+
+### Popular Services for Open Telemetry
+
+Many of the services below will allow you to start for free.  Make sure to understand pricing at the level
+of scale you require - this can be data storage,
+number of users that need access to the platform,
+number of transactions sent, or other factors.
+
+* [Elastic APM](https://www.elastic.co/observability/application-performance-monitoring): Elastic integrates with OpenTelemetry, allowing you to reuse your existing instrumentation to send observability data to the Elastic Stack.
+* [Datadog](https://www.datadoghq.com/): Datadog supports OpenTelemetry for collecting and visualizing traces, metrics, and logs.
+* [New Relic](https://newrelic.com/): New Relic offers support for OpenTelemetry, enabling you to send telemetry data to their platform.
+* [Splunk](https://www.splunk.com/): Splunk's Observability Cloud supports OpenTelemetry for comprehensive monitoring and analysis.
+* [Honeycomb](https://www.honeycomb.io/): Honeycomb integrates with OpenTelemetry to provide detailed tracing and observability.
+
+### Running a Docker Image Locally
+
+First, build the container image:
+
+```powershell
+dotnet publish --os linux /t:PublishContainer `
+  -p ContainerRepository=carvedrock-api
+```
+
+Then, run it with the various environment variables set:
+
+```powershell
+docker run -d --name cr-api `
+-p 8080:8080 `
+-e ConnectionStrings__CarvedRockPostgres="Host=34.56.7.194;Database=carvedrock;Username=postgres;Password=0JA}mP-UDxS9}#Gq;" `
+-e OTEL_EXPORTER_OTLP_ENDPOINT="https://0146b894b1694cbc8d202a83a14e1efb.apm.us-central1.gcp.cloud.es.io:443" `
+-e OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer RaemoVEmPNVMlSAwRv" `
+-e OTEL_METRICS_EXPORTER=otlp `
+-e OTEL_LOGS_EXPORTER=otlp `
+-e OTEL_BLRP_SCHEDULE_DELAY='1000' `
+-e OTEL_BSP_SCHEDULE_DELAY='1000' `
+-e OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION='true' `
+-e OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION='true' `
+-e OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES='true' `
+-e OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES='true' `
+-e OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY=in_memory `
+-e OTEL_METRICS_EXEMPLAR_FILTER=trace_based `
+-e OTEL_METRIC_EXPORT_INTERVAL='1000' `
+-e OTEL_EXPORTER_OTLP_PROTOCOL=grpc `
+-e OTEL_RESOURCE_ATTRIBUTES=service.version=1.0.0,service.namespace=carvedrock,deployment.environment=local,service.instance.id=erik `
+-e OTEL_SERVICE_NAME=carvedrock-api `
+-e OTEL_TRACES_SAMPLER=always_on `
+carvedrock-api
+```
+
+Finally, open a browser to [http://localhost:8080/product](http://localhost:8080/product)
+
+Check your Open Telemetry logs / trace!

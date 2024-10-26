@@ -15,9 +15,9 @@ internal static class LoggingHelper
             { "Microsoft.EntityFrameworkCore.Update", "Information" },
         };
 
-        if (dict.ContainsKey("Default"))
+        if (dict.TryGetValue("Default", out string? value))
         {
-            builder = builder.WithEnvironment($"Serilog__MinimumLevel__Default", dict["Default"]);
+            builder = builder.WithEnvironment($"Serilog__MinimumLevel__Default", value);
         }
         foreach (var item in dict.Keys.Where(k => k != "Default"))
         {

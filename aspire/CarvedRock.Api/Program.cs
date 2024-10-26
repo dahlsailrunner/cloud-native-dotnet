@@ -5,7 +5,6 @@ using CarvedRock.Api;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Serilog;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Diagnostics;
 using CarvedRock.Domain.Mapping;
@@ -77,7 +76,7 @@ var app = builder.Build();
 //        diagnosticContext.Set("client_id", httpContext.User.Claims.FirstOrDefault(c => c.Type == "client_id")?.Value);
 //    };
 //});
-
+app.MapDefaultEndpoints();
 app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())

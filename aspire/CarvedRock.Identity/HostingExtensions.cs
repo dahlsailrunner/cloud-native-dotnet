@@ -29,7 +29,7 @@ internal static class HostingExtensions
     {
         app.MapDefaultEndpoints();
 
-        app.UseSerilogRequestLogging();
+        //app.UseSerilogRequestLogging();
     
         if (app.Environment.IsDevelopment())
         {

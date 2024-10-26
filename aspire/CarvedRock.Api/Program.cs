@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using System.Diagnostics;
 using CarvedRock.Domain.Mapping;
 using FluentValidation;
+using CarvedRock.Core;
 
 var builder = WebApplication.CreateBuilder(args);        
 builder.AddServiceDefaults(); // serilog configured inside here
@@ -36,11 +37,11 @@ builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.Authority = authority;
-        options.Audience = "carvedrockapi";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             NameClaimType = "email",
-            RoleClaimType = "role"
+            RoleClaimType = "role",
+            ValidateAudience = false
         };
     });
 
@@ -69,13 +70,13 @@ builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
 builder.Services.AddValidatorsFromAssemblyContaining<NewProductValidator>();
 
 var app = builder.Build();
-app.UseSerilogRequestLogging(options =>
-{
-    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
-    {
-        diagnosticContext.Set("client_id", httpContext.User.Claims.FirstOrDefault(c => c.Type == "client_id")?.Value);
-    };
-});
+//app.UseSerilogRequestLogging(options =>
+//{
+//    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+//    {
+//        diagnosticContext.Set("client_id", httpContext.User.Claims.FirstOrDefault(c => c.Type == "client_id")?.Value);
+//    };
+//});
 
 app.UseExceptionHandler();
 
@@ -84,9 +85,9 @@ if (app.Environment.IsDevelopment())
     SetupDevelopment(app);
 }
 
-app.MapFallback(() => Results.Redirect("/swagger"));
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<UserScopeMiddleware>();
 app.MapControllers().RequireAuthorization();
 
 app.Run();

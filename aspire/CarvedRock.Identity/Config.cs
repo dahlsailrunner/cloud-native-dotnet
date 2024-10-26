@@ -14,7 +14,7 @@ public static class Config
 
     public static IEnumerable<ApiScope> ApiScopes =>
     [
-        new ApiScope("carvedrockapi"),
+        new ApiScope("carvedrockapi", userClaims: ["email"]),
     ];
 
     public static IEnumerable<Client> Clients =>

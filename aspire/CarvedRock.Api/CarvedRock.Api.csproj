@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<IsPublishable>true</IsPublishable>
 	<EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+	<UserSecretsId>466b1730-2aa2-4ba0-be10-e48444797505</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -148,3 +148,74 @@ docker build --push -t registry.mycompany.com/dahlsailrunner/carved-rock-api -f 
 ```
 
 Note that you need to have already done a `docker login` to any registry you're pushing to.
+
+## Open Telemetry Configuration
+
+Open Telemetry includes logging, tracing, and metrics.
+
+Details for each of these areas and general configuration
+is provided by a handful of environment variables or
+other configuration values - here's a sample:
+
+```yaml
+OTEL_EXPORTER_OTLP_ENDPOINT: http://localhost:4317
+OTEL_METRICS_EXPORTER: otlp
+OTEL_LOGS_EXPORTER: otlp
+OTEL_BLRP_SCHEDULE_DELAY: '1000'
+OTEL_BSP_SCHEDULE_DELAY: '1000'
+OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION: 'true'
+OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION: 'true'
+OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: 'true'
+OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: 'true'
+OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: in_memory
+OTEL_METRICS_EXEMPLAR_FILTER: trace_based
+OTEL_METRIC_EXPORT_INTERVAL: '1000'
+OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+OTEL_RESOURCE_ATTRIBUTES: service.version=1.0.0,service.namespace=carvedrock,deployment.environment=local,service.instance.id=<containerid>
+OTEL_SERVICE_NAME: carvedrock-api
+OTEL_TRACES_SAMPLER: always_on
+```
+
+To see the values configured when running projects from
+an Aspire AppHost, set a breakpoint in a `Program.cs`
+file after the `WebApplication.CreateBuilder()` call
+is made (or after you've loaded configuration).
+
+Then review the `IConfiguration` instance for all
+of the `OTEL_*` configuration keys.
+
+Here are some reference locations for more details
+about possible configuration options:
+
+* [General envrionment variables reference for .NET OpenTelemetry](https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/src/OpenTelemetry.Exporter.OpenTelemetryProtocol/README.md#environment-variables)
+* [Details about the `OTEL_RESOURCE_ATTRIBUTES` options](https://opentelemetry.io/docs/specs/semconv/resource/)
+* [How sampling works](https://opentelemetry.io/docs/specs/otel/trace/sdk/#sampling)
+* [How to set sampling-related configuration](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/configuration/sdk-environment-variables.md)
+
+### Testing an Open Telemetry Service Locally
+
+A simple extension method called `WithOtherOpenTelemetryService` has been
+added to the AppHost code in `LoggingHelper.cs`.
+
+Calls to this method can be commented in / enabled in
+`Program.cs` of the AppHost to send local Open Telemetry
+data to a different place than the Aspire Dashboard.
+
+You'll need to provide the `OTEL_EXPORTER_OTLP_ENDPOINT`
+value for your service in the `WithOtherOpenTelemetryService` method, and if that
+endpoint requires authorization, provide the
+`OTEL_EXPORTER_OTLP_HEADERS` value in the user secrets
+for the AppHost under the key of `ApmServerAuth`,
+something like this:
+
+```json
+  "ApmServerAuth": "Authorization=Bearer yourtokenvalue"
+```
+
+**N O T E:** This method is provided for simple testing
+of an Open Telemetry service and your configuration of
+it.  In general, you should use the Aspire Dashboard
+locally - it's really fast, and it's only your data - not
+your teammates'.  But this method can help you confirm
+your deployment setup and configuration before you
+actually deploy.

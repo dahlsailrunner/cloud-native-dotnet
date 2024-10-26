@@ -1,5 +1,6 @@
 ﻿using CarvedRock.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CarvedRock.Data;
@@ -11,8 +12,12 @@ public class LocalContext(DbContextOptions<LocalContext> options) : DbContext(op
     [ExcludeFromCodeCoverage]
     public void MigrateAndCreateData()
     {
-        //Database.EnsureDeleted();
-        Database.Migrate();
+        Database.Migrate(); // always apply migrations       
+
+        var pgConn = new NpgsqlConnectionStringBuilder(Database.GetConnectionString());
+        if (pgConn != null && 
+            !string.Equals(pgConn.Host, "localhost", StringComparison.InvariantCultureIgnoreCase)) 
+            return;
 
         if (Products.Any())
         {

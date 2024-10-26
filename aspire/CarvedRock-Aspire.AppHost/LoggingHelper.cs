@@ -25,4 +25,13 @@ internal static class LoggingHelper
         }
         return builder;
     }
+
+    internal static IResourceBuilder<T> WithOtherOpenTelemetryService<T>(this IResourceBuilder<T> builder, string apmAuthHeader)
+        where T : IResourceWithEnvironment
+    {
+        builder = builder.WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "https://0146b894b1694cbc8d202a83a14e1efb.apm.us-central1.gcp.cloud.es.io:443");
+        builder = builder.WithEnvironment("OTEL_EXPORTER_OTLP_HEADERS", apmAuthHeader);
+        return builder;
+    }
+
 }

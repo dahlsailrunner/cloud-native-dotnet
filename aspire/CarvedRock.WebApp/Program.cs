@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using CarvedRock.WebApp;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Authentication;
+using CarvedRock.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<UserScopeMiddleware>();
 
 app.MapRazorPages().RequireAuthorization();
 

@@ -77,6 +77,7 @@ var app = builder.Build();
 //    };
 //});
 app.MapDefaultEndpoints();
+
 app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())

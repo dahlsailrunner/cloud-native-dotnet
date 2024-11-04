@@ -8,7 +8,7 @@ using CarvedRock.Core;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults(); // serilog configured in here
-        
+
 var authority = builder.Configuration.GetValue<string>("Auth:Authority"); 
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;

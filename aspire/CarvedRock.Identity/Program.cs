@@ -11,8 +11,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.AddServiceDefaults(); // serilog / logging configured in here    
-
+    builder.AddServiceDefaults(); // serilog / logging configured in here
+    
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();

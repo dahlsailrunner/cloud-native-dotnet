@@ -50,6 +50,7 @@ public static class Extensions
     private static readonly string[] _excludeFromTraces = [
         "aspnetcore-browser-refresh.js",
         "browserLink",
+        //"health",
        ];
     public static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
     {
@@ -84,7 +85,14 @@ public static class Extensions
                 })
                 // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
                 //.AddGrpcClientInstrumentation()
-                .AddHttpClientInstrumentation();
+                .AddHttpClientInstrumentation(options =>
+                {
+                    options.FilterHttpRequestMessage = (request) =>
+                    {
+                        return !request.RequestUri?.ToString().Contains("getScriptTag", 
+                            StringComparison.InvariantCultureIgnoreCase) ?? true;
+                    };
+                });
             });
 
         builder.AddOpenTelemetryExporters();
@@ -168,8 +176,7 @@ public static class Extensions
 
     public static WebApplication MapDefaultEndpoints(this WebApplication app)
     {
-        app.UseRequestTimeouts();
-        app.UseOutputCache();
+        
 
         var healthChecks = app.MapGroup("");
 
@@ -187,6 +194,9 @@ public static class Extensions
         {
             Predicate = static r => r.Tags.Contains("live")
         });
+
+        app.UseRequestTimeouts();
+        app.UseOutputCache();
 
         return app;
     }

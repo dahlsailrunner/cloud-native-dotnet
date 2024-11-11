@@ -6,4 +6,5 @@
 **/TestResults
 **/reports
 /aspire/CarvedRock-Aspire.sln.DotSettings.user
-/aspire/CarvedRock.Identity/keys/*.json
+/aspire/CarvedRock.Identity/keys
+/aspire/CarvedRock-Aspire.AppHost/infra

@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<IsPublishable>true</IsPublishable>
 		<EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+		<ContainerUser>root</ContainerUser>
 	</PropertyGroup>
 
 	<ItemGroup>

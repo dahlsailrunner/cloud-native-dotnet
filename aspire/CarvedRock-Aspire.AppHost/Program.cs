@@ -7,11 +7,13 @@ var apmAuthHeader = builder.Configuration.GetValue<string>("ApmServerAuth")!; //
 var carvedrockdb = builder.AddPostgres("postgres")
                           .AddDatabase("CarvedRockPostgres");
 
-var emailService = builder.AddSmtp4Dev("SmtpUri");  // custom extension
+var emailService = builder.AddSmtp4Dev("smtp-4-dev")  // custom extension
+    .WithExternalHttpEndpoints();
 
 var identityserver = builder.AddProject<Projects.CarvedRock_Identity>("carvedrock-identity")
     //.WithOtherOpenTelemetryService(apmAuthHeader)
-    .WithSharedLoggingLevels();
+    .WithSharedLoggingLevels()
+    .WithExternalHttpEndpoints();
 
 var identityEndpoint = identityserver.GetEndpoint("https");
 
@@ -26,6 +28,7 @@ builder.AddProject<Projects.CarvedRock_WebApp>("carvedrock-webapp")
     .WithSharedLoggingLevels()
     //.WithOtherOpenTelemetryService(apmAuthHeader)
     .WithEnvironment("Auth__Authority", identityEndpoint)
-    .WithReference(emailService);    
+    .WithReference(emailService)
+    .WithExternalHttpEndpoints();    
 
 builder.Build().Run();

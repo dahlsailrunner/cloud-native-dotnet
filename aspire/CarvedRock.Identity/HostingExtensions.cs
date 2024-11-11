@@ -15,6 +15,11 @@ internal static class HostingExtensions
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
                 options.EmitStaticAudienceClaim = true;
+
+                options.KeyManagement.RotationInterval = TimeSpan.FromDays(30);
+                options.KeyManagement.PropagationTime = TimeSpan.FromDays(2);
+                options.KeyManagement.RetentionDuration = TimeSpan.FromDays(7);
+                options.KeyManagement.DeleteRetiredKeys = false;
             })
             .AddTestUsers(TestUsers.Users);
 

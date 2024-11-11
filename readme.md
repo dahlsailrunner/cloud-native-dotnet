@@ -26,7 +26,7 @@ C4Context
     UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
 ```
 
-## Building Container Images (for CI pipelines)
+## Building Container Images
 
 The easiest way to build container images for the ASP.NET Core
 projects is to use `dotnet publish` with the `PublishContainer` option.
@@ -271,3 +271,153 @@ carvedrock-api
 Finally, open a browser to [http://localhost:8080/product](http://localhost:8080/product)
 
 Check your Open Telemetry logs / trace!
+
+## Deploying to Azure Container Apps
+
+> **NOTE:** There are a couple of "issues" resolved in here
+> from that would apply even to deploying to Kubernetes or
+> other targets that want or need to take advantage of
+> an `aspire-manifest.json` that's as accurate as possible.
+
+### Prerequisites
+
+1. Make sure you have the Azure CLI installed. (`winget install Microsoft.Azd`)
+1. Ensure you have some kind of Azure subscription where you have permission
+to create resources (Visual Studio/MSDN subscriptions often come with free Azure credits)
+1. Login to your Azure subscription from the CLI using `azd auth login`.
+
+### Deployment
+
+It's pretty much as simple as two commands (from the AppHost project directory):
+
+```bash
+azd init  ## this is a one time step
+azd up  ## do this when you want to push updates
+```
+
+`azd init` will prompt you for an enviornment name (like `dev` or `prod`).
+It will also generate a `next-steps.md` file that you can review.
+
+Then `azd up` will prompt you for the Azure subscription and region to use,
+and provision and deploy your app!
+
+> **TIP:** To deploy a single service that you've changed, just do:
+> `azd deploy <service-name>`
+
+### Deployment Issues
+
+For this particular solution / application, there were a couple
+of things that needed to be updated in the code to get this deployed
+in a fully working state.
+
+#### Externally Available Services
+
+The first issue was that the services (https endpoints) were not
+available externally. This is by design and a good thing.  For any
+services you want to be able to reach from a browser, you need to add
+the `WithExternalHttpEndpoints()` method to those services in your
+`AppHost` code.
+
+***Only make endpoints available externally if they need to be.*** Our
+API, for example, does NOT need to be available externally for the app
+to work.
+
+#### Database Migrations and Data
+
+The second issue was **database migrations and initial data**. You'll
+have to have a way to apply migrations and possibly populate some
+initial data to your database. The solution within this demo application
+was to loosen the "development-only" conditionals for applying
+migrations and creating some initial data.
+
+***Just make sure you have a way to apply migrations and create any
+seed / initial data you need.***
+
+#### IdentityServer
+
+This application uses a sample - read: not production-ready - of Duende
+IdentityServer with hard-coded users, configuration, and very simple key
+management.  To make this work in a deployed environment, we needed to
+have the container run as root (see the `.csproj` file) so that it had
+permissions to write the key files (these would normallly be stored in
+the database), and we also had to add the URI for the deployed webapp
+as an allowed redirect to the hard-coded configuration for the client app.
+
+### Documentation
+
+* [Deploy Aspire to ACA](https://learn.microsoft.com/en-us/dotnet/aspire/deployment/azure/aca-deployment)
+* [Deploy with azd (in-depth)](https://learn.microsoft.com/en-us/dotnet/aspire/deployment/azure/aca-deployment-azd-in-depth)
+* [Deploying using Pipelines](https://learn.microsoft.com/en-us/dotnet/aspire/deployment/azure/aca-deployment-github-actions?pivots=github-actions)
+
+### Seeing Some Internals
+
+To get some insight into what is actually being provisioned, try the following:
+
+* Explore the already-generated `.azure` folder
+* Look at `azure.yaml`
+
+```powershell
+azd config set alpha.infraSynth on   ## only needed one time
+azd infra synth
+```
+
+Explore the `infra` folder.
+
+#### Aspire Manifest
+
+To see the manifest that the `azd` CLI (and other tooling) uses to see the application
+setup, run the following command:
+
+```powershell
+dotnet run --project CarvedRock-Aspire.AppHost.csproj --output-path manifest.json --publisher manifest
+```
+
+### Production Concerns
+
+#### Persistent Azure Services
+
+Our application uses a Postgres database as one of its
+services, and while that is fine for local dev and early
+test environments -- and may even be super beneficial due to lower cost --
+it's more common for production (and often
+at least one test environment before production) to use a
+persistent and highly available service.
+
+There ARE Aspire hosting methods that can target and provision
+various Azure services:
+
+```csharp
+var postgresdb = builder.AddPostgres("postgres")
+                       .AddDatabase("CarvedRockPostgres");
+```
+
+would be replaced with:
+
+```csharp
+var postgresdb = builder.AddAzurePostgresFlexibleServer("postgres")
+                       .AddDatabase("CarvedRockPostgres");
+```
+
+Or maybe even:
+
+```csharp
+var postgres = builder.ExecutionContext.IsPublishMode 
+  ? builder.AddAzurePostgresFlexibleServer("postgres")
+  : builder.AddPostgres("postgres");
+
+var postgresdb = postgres.AddDatabase("CarvedRockPostgres");
+```
+
+More information: [https://learn.microsoft.com/en-us/dotnet/aspire/database/postgresql-entity-framework-integration?tabs=dotnet-cli](https://learn.microsoft.com/en-us/dotnet/aspire/database/postgresql-entity-framework-integration?tabs=dotnet-cli)
+
+#### Conditional Services
+
+Our dev email server (`rnwood/smtp4dev`) is a fake email server that
+we should only use for local development and early testing environments.
+In higher testing environments and production we would want to use a real
+email service.
+
+For situations like this it may be best to use the Aspire-based deployments
+ONLY for environments where you want it more fully deployed, and then
+for higher environments you would simply build container images (see [above](#building-container-images))
+and deploy them with the configuration they need.

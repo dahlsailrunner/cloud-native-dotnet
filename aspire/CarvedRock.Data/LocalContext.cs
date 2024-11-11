@@ -16,7 +16,8 @@ public class LocalContext(DbContextOptions<LocalContext> options) : DbContext(op
 
         var pgConn = new NpgsqlConnectionStringBuilder(Database.GetConnectionString());
         if (pgConn != null && 
-            !string.Equals(pgConn.Host, "localhost", StringComparison.InvariantCultureIgnoreCase)) 
+            !string.Equals(pgConn.Host, "localhost", StringComparison.InvariantCultureIgnoreCase) &&
+            !string.Equals(pgConn.Host, "postgres", StringComparison.InvariantCultureIgnoreCase)) 
             return;
 
         if (Products.Any())

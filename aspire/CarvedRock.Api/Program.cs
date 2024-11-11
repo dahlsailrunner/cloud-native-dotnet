@@ -80,10 +80,10 @@ app.MapDefaultEndpoints();
 
 app.UseExceptionHandler();
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     SetupDevelopment(app);
-}
+//}
 
 app.UseAuthentication();
 app.UseAuthorization();

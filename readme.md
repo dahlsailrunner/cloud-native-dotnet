@@ -304,6 +304,15 @@ and provision and deploy your app!
 > **TIP:** To deploy a single service that you've changed, just do:
 > `azd deploy <service-name>`
 
+#### Removing a Deployment
+
+If you're done with a deployment to Azure Container Apps and no longer
+need it, removing it is as simple as:
+
+```bash
+azd down  # will remove everything - including the resource group!
+```
+
 ### Deployment Issues
 
 For this particular solution / application, there were a couple

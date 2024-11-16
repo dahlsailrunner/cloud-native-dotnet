@@ -24,11 +24,11 @@ var api = builder.AddProject<Projects.CarvedRock_Api>("carvedrock-api")
     .WithEnvironment("Auth__Authority", identityEndpoint);
 
 builder.AddProject<Projects.CarvedRock_WebApp>("carvedrock-webapp")
-    .WithReference(api)    
+    .WithReference(api)
     .WithSharedLoggingLevels()
     //.WithOtherOpenTelemetryService(apmAuthHeader)
     .WithEnvironment("Auth__Authority", identityEndpoint)
     .WithReference(emailService)
-    .WithExternalHttpEndpoints();    
+    .WithExternalHttpEndpoints();
 
 builder.Build().Run();

@@ -430,3 +430,49 @@ For situations like this it may be best to use the Aspire-based deployments
 ONLY for environments where you want it more fully deployed, and then
 for higher environments you would simply build container images (see [above](#building-container-images))
 and deploy them with the configuration they need.
+
+## Deployment to Kubernetes with Aspir8
+
+<https://prom3theu5.github.io/aspirational-manifests/getting-started.html>
+<https://github.com/prom3theu5/aspirational-manifests>
+
+```bash
+dotnet tool install -g aspirate --prerelease
+
+aspirate init # from apphost directory
+
+aspirate build # build container images - choose what you want to include
+
+aspirate generate # generates k8s manifests, can also build: use --skip-build 
+
+aspirate apply # choose k8s context (cluster)
+
+aspirate destroy
+```
+
+`build` creates (and pushes if registry set) images using the `dotnet publish`
+approach.
+
+More efficient than the `kubectl` CLI:
+
+* [k9s](https://k9scli.io/): Terminal-based UI
+* [Lens](https://k8slens.dev/): Full UI (free individually, licensed for companies with more than $10M in annual revenue)
+
+Can use "port forwarding" to see the services.
+
+[Aspire service discovery](https://learn.microsoft.com/en-us/dotnet/aspire/service-discovery/overview) can help resolve certain container-to-container networking
+issues.
+
+### Ingress
+
+Cloud providers usually have some kind of "built-in" or "preferred" ingress
+controller that will provide free https certificates (and management / rotation).
+Recommend using them.  Like what we saw with Azure Container Apps.
+
+Get an ingress controller - nginx is a common one.
+
+[https://kubernetes.github.io/ingress-nginx/deploy/#quick-start](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start)
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
+```

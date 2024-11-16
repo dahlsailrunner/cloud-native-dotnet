@@ -433,8 +433,8 @@ and deploy them with the configuration they need.
 
 ## Deployment to Kubernetes with Aspir8
 
-<https://prom3theu5.github.io/aspirational-manifests/getting-started.html>
-<https://github.com/prom3theu5/aspirational-manifests>
+* [Aspir8 Docs](https://prom3theu5.github.io/aspirational-manifests/getting-started.html)
+* [Aspir8 GitHub repo](https://github.com/prom3theu5/aspirational-manifests)
 
 ```bash
 dotnet tool install -g aspirate --prerelease

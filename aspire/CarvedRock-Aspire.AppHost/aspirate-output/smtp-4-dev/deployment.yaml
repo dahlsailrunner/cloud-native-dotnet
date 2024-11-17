@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smtp-4-dev
+  labels:
+    app: smtp-4-dev
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smtp-4-dev
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: smtp-4-dev
+    spec:
+      containers:
+      - name: smtp-4-dev
+        image: docker.io/rnwood/smtp4dev:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
+        - name: smtp
+          containerPort: 25
+        envFrom:
+        - configMapRef:
+            name: smtp-4-dev-env
+      terminationGracePeriodSeconds: 180

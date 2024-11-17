@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carvedrock-api
+  labels:
+    app: carvedrock-api
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carvedrock-api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: carvedrock-api
+    spec:
+      containers:
+      - name: carvedrock-api
+        image: knowyourtoolset/carvedrock-api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        envFrom:
+        - configMapRef:
+            name: carvedrock-api-env
+        - secretRef:
+            name: carvedrock-api-secrets
+      terminationGracePeriodSeconds: 180

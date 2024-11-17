@@ -457,6 +457,7 @@ More efficient than the `kubectl` CLI:
 
 * [k9s](https://k9scli.io/): Terminal-based UI
 * [Lens](https://k8slens.dev/): Full UI (free individually, licensed for companies with more than $10M in annual revenue)
+* [Headlamp](https://headlamp.dev/): Full UI - open source, completely free
 
 Can use "port forwarding" to see the services.
 
@@ -475,4 +476,56 @@ Get an ingress controller - nginx is a common one.
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
+```
+
+### Generate "Initial" Kubernetes manifests
+
+```powershell
+aspirate generate --skip-build --output-path=./k8s --namespace=carvedrock --container-image-tag=1.0.0 --container-registry=carvedrock.azurecr.io --container-repository-prefix carvedrock --image-pull-policy IfNotPresent --disable-secrets --disable-state --include-dashboard false  
+```
+
+Choose the services you want.  Eliminate command line options and provide them interactively if you like.
+
+Then make updates to the files in prep for a real deployment.
+
+I updated:
+
+* Image names in `deployment.yaml` files (not using a container registry)
+* Added resource limits in `deployment.yaml` files with copilot (starting points for them, anyway)
+* Added `ingress.yaml` file to `webapp` and updated `kustomization.yaml` to include it
+* Removed the `ConnectionStrings__CarvedRockPostgres` value from the api `kustomization.yaml` file (it
+was added since I had user secrets set locally)
+
+Manually apply namespace (it's a one-time thing) to be able to create secrets in the namespace:
+
+```bash
+kubectl apply -f ./k8s/namespace.yaml
+```
+
+Create a secret for the postgres database connection string:
+
+```bash
+kubectl create secret generic postgres-connstr -n carvedrock --from-literal=ConnectionStrings__CarvedRockPostgres="Host=34.56.7.194;Database=carvedrock;Username=postgres;Password=0JA}mP-UDxS9}#Gq;"
+```
+
+Add a reference to the secrets in the `-envFrom` section of the deployment manifests:
+
+```yaml
+        envFrom:
+        - configMapRef:
+            name: carvedrock-api-env
+        - secretRef:
+            name: postgres-connstr
+```
+
+Apply!
+
+```bash
+kubectl apply -k ./k8s
+```
+
+To remove everything:
+
+```bash
+kubectl delete -k ./k8s
 ```

@@ -1,0 +1,14 @@
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: smtp-4-dev-env
+  literals:
+    - OTEL_EXPORTER_OTLP_ENDPOINT=http://aspire-dashboard:18889
+    - OTEL_SERVICE_NAME=smtp-4-dev
+

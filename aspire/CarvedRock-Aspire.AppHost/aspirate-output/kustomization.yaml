@@ -1,0 +1,16 @@
+namespace: carvedrock
+
+resources:
+- postgres
+- smtp-4-dev
+- carvedrock-identity
+- carvedrock-api
+- carvedrock-webapp
+- namespace.yaml
+- dashboard.yaml
+- ingress.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+

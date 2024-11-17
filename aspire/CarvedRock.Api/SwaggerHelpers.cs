@@ -40,5 +40,5 @@ public class SwaggerOptions(IConfiguration config) : IConfigureOptions<SwaggerGe
                 oauthScopes.Keys.ToArray()
             }
         });
-    }     
+    }
 }

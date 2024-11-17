@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-cr-identity
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls: 
+  - hosts:
+    - auth.carvedrock.local
+    secretName: cr-identity-tls 
+  rules:
+  - host: auth.carvedrock.local        
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: carvedrock-identity
+            port: 
+              number: 8080

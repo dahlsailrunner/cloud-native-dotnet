@@ -1,0 +1,31 @@
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: carvedrock-webapp-env
+  literals:
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY=in_memory
+    - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+    - HTTP_PORTS=8080
+    - services__carvedrock-api__http__0=http://carvedrock-api:8080
+    - Serilog__MinimumLevel__Default=Information
+    - Serilog__MinimumLevel__Override__Microsoft=Warning
+    - Serilog__MinimumLevel__Override__Microsoft.Hosting=Information
+    - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore.Database.Command=Information
+    - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore.Query=Information
+    - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore.Update=Information
+    - OTEL_EXPORTER_OTLP_ENDPOINT=http://aspire-dashboard:18889
+    - OTEL_SERVICE_NAME=carvedrock-webapp
+    - ASPNETCORE_URLS=http://+:8080;
+
+secretGenerator:
+- name: carvedrock-webapp-secrets
+  envs:
+  - .carvedrock-webapp.secrets

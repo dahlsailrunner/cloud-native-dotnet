@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carvedrock-identity
+  labels:
+    app: carvedrock-identity
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carvedrock-identity
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: carvedrock-identity
+    spec:
+      containers:
+      - name: carvedrock-identity
+        image: knowyourtoolset/carvedrock-identity:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        envFrom:
+        - configMapRef:
+            name: carvedrock-identity-env
+      terminationGracePeriodSeconds: 180

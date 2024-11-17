@@ -1,0 +1,18 @@
+{
+  "projectPath": ".",
+  "outputPath": "./k8s",
+  "namespace": "carvedrock",
+  "containerRegistry": "carvedrock.azurecr.io",
+  "containerImageTags": [
+    "1.0.0"
+  ],
+  "imagePullPolicy": "Always",
+  "containerBuilder": "docker",
+  "containerRepositoryPrefix": "carvedrock",
+  "outputFormat": "kustomize",
+  "disableSecrets": true,
+  "skipFinalKustomizeGeneration": false,
+  "privateRegistryEmail": "aspir8@aka.ms",
+  "includeDashboard": false,
+  "useCustomNamespace": true
+}

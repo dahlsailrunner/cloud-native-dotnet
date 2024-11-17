@@ -8,3 +8,5 @@
 /aspire/CarvedRock-Aspire.sln.DotSettings.user
 /aspire/CarvedRock.Identity/keys
 /aspire/CarvedRock-Aspire.AppHost/infra
+aspire/CarvedRock-Aspire.AppHost/https-for-identity/cr-id-local.crt
+aspire/CarvedRock-Aspire.AppHost/https-for-identity/cr-id-local.key

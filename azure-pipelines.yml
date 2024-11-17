@@ -47,7 +47,7 @@ steps:
   inputs:
     command: 'publish'  
     publishWebProjects: false  
-    projects: './aspire/**/CarvedRock.Api.csproj'  
+    projects: '**/aspire/CarvedRock.Api/CarvedRock.Api.csproj'  
     arguments: >-
       --os linux
       --arch x64 

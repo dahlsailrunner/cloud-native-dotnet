@@ -13,17 +13,22 @@ pool:
 
 steps:
 - task: UseDotNet@2
+  name: Install .NET SDK
   inputs:
     packageType: 'sdk'
     version: '8.x'
 
+# only needed if you're going to use aspirate for builds or other steps
 - task: DotNetCoreCLI@2
+  name: Install Aspirate
   inputs:
     command: 'custom'
     custom: 'tool'
     arguments: 'install -g aspirate --prerelease'
 
 - task: CmdLine@2
+  name: Aspirate Build (build and push images)
+  enabled: false
   inputs:
     script: |
       aspirate build -m ./manifest.json \
@@ -36,3 +41,21 @@ steps:
   env:
     SDK_CONTAINER_REGISTRY_UNAME: 'dahlsailrunner'
     SDK_CONTAINER_REGISTRY_PWORD: $(DOCKER_PASSWORD)
+
+- task: DotNetCoreCLI@2
+  name: .NET Publish API (build and push api image)
+  inputs:
+    command: 'publish'    
+    workingDirectory: './aspire/CarvedRock.Api'    
+    arguments: >-
+      --os linux
+      --arch x64 
+      /t:PublishContainer
+      -p ContainerRegistry=docker.io
+      -p ContainerRepository=dahlsailrunner/carvedrock-api
+      -p ContainerImageTag=$(Build.BuildNumber)
+  env:
+    SDK_CONTAINER_REGISTRY_UNAME: 'dahlsailrunner'
+    SDK_CONTAINER_REGISTRY_PWORD: $(DOCKER_PASSWORD)
+
+# would need to repeat above for identity and webapp projects

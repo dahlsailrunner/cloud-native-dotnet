@@ -529,3 +529,11 @@ To remove everything:
 ```bash
 kubectl delete -k ./k8s
 ```
+
+### Deployment Pipeline
+
+* Get k8s files
+* Replace build number (tag number) in deployments
+* Apply namespace yaml
+* Create secrets
+* `kubectl apply -l ./k8s`

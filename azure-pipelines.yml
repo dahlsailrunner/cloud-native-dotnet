@@ -29,12 +29,9 @@ steps:
 #note: repository name is the prefix below + your service name string from the app host
 - task: CmdLine@2
   displayName: 'Aspirate Build (build and push images)'
-  enabled: true
   inputs:
     script: |
-      aspirate build -m ./manifest.json \
-      --non-interactive \
-      --disable-secrets \
+      aspirate build -m ./manifest.json --non-interactive --disable-secrets \
       --container-repostiory-prefix=dahlsailrunner \ 
       --container-image-tag=$(Build.BuildNumber) \
       --container-registry=docker.io

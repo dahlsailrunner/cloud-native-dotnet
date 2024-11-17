@@ -45,8 +45,9 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: '.NET Publish API (build and push api image)'
   inputs:
-    command: 'publish'    
-    workingDirectory: './aspire/CarvedRock.Api'    
+    command: 'publish'  
+    publishWebProjects: false  
+    projects: './aspire/**/CarvedRock.Api.csproj'  
     arguments: >-
       --os linux
       --arch x64 

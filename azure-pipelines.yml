@@ -13,21 +13,21 @@ pool:
 
 steps:
 - task: UseDotNet@2
-  name: Install .NET SDK
+  displayName: 'Install .NET SDK'
   inputs:
     packageType: 'sdk'
     version: '8.x'
 
 # only needed if you're going to use aspirate for builds or other steps
 - task: DotNetCoreCLI@2
-  name: Install Aspirate
+  displayName: 'Install Aspirate'
   inputs:
     command: 'custom'
     custom: 'tool'
     arguments: 'install -g aspirate --prerelease'
 
 - task: CmdLine@2
-  name: Aspirate Build (build and push images)
+  displayName: 'Aspirate Build (build and push images)'
   enabled: false
   inputs:
     script: |
@@ -43,7 +43,7 @@ steps:
     SDK_CONTAINER_REGISTRY_PWORD: $(DOCKER_PASSWORD)
 
 - task: DotNetCoreCLI@2
-  name: .NET Publish API (build and push api image)
+  displayName: '.NET Publish API (build and push api image)'
   inputs:
     command: 'publish'    
     workingDirectory: './aspire/CarvedRock.Api'    

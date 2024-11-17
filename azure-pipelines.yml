@@ -28,7 +28,7 @@ steps:
       --non-interactive \
       --disable-secrets \
       --container-repostiory-prefix=dahlsailrunner \
-      --container-image-tag=$(Date:yyyyMMdd).$(Rev:r) \
+      --container-image-tag=$(Build.BuildId) \
       --container-registry=docker.io
     workingDirectory: './aspire/CarvedRock-Aspire.AppHost'
   env:

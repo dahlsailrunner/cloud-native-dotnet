@@ -26,15 +26,16 @@ steps:
     custom: 'tool'
     arguments: 'install -g aspirate --prerelease'
 
+#note: repository name is the prefix below + your service name string from the app host
 - task: CmdLine@2
   displayName: 'Aspirate Build (build and push images)'
-  enabled: false
+  enabled: true
   inputs:
     script: |
       aspirate build -m ./manifest.json \
       --non-interactive \
       --disable-secrets \
-      --container-repostiory-prefix=dahlsailrunner \
+      --container-repostiory-prefix=dahlsailrunner \ 
       --container-image-tag=$(Build.BuildNumber) \
       --container-registry=docker.io
     workingDirectory: './aspire/CarvedRock-Aspire.AppHost'
@@ -42,8 +43,10 @@ steps:
     SDK_CONTAINER_REGISTRY_UNAME: 'dahlsailrunner'
     SDK_CONTAINER_REGISTRY_PWORD: $(DOCKER_PASSWORD)
 
+## manually build each container if that's better for you
 - task: DotNetCoreCLI@2
   displayName: '.NET Publish API (build and push api image)'
+  enabled: false
   inputs:
     command: 'publish'  
     publishWebProjects: false  

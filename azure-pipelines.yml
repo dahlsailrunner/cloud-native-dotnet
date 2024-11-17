@@ -27,9 +27,9 @@ steps:
       aspirate build -m ./manifest.json \
       --non-interactive \
       --disable-secrets \
-      --container-repostiory-prefix dahlsailrunner \
-      --container-image-tag $(Date:yyyyMMdd).$(Rev:r) \
-      --container-registry docker.io
+      --container-repostiory-prefix=dahlsailrunner \
+      --container-image-tag=$(Date:yyyyMMdd).$(Rev:r) \
+      --container-registry=docker.io
     workingDirectory: './aspire/CarvedRock-Aspire.AppHost'
   env:
     SDK_CONTAINER_REGISTRY_UNAME: 'dahlsailrunner'

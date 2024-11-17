@@ -31,10 +31,7 @@ steps:
   displayName: 'Aspirate Build (build and push images)'
   inputs:
     script: |
-      aspirate build -m ./manifest.json --non-interactive --disable-secrets \
-      --container-repostiory-prefix=dahlsailrunner \ 
-      --container-image-tag=$(Build.BuildNumber) \
-      --container-registry=docker.io
+      aspirate build -m ./manifest.json --non-interactive --disable-secrets --container-repostiory-prefix=dahlsailrunner --container-image-tag=$(Build.BuildNumber) --container-registry=docker.io
     workingDirectory: './aspire/CarvedRock-Aspire.AppHost'
   env:
     SDK_CONTAINER_REGISTRY_UNAME: 'dahlsailrunner'

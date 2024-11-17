@@ -3,7 +3,7 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
-name: $(Date:yyyyMMdd).$(Rev:r)
+name: $(Date:yyyyMMdd).$(Rev:r) # defines Build.BuildNumber used for tagging
 
 trigger:
 - main

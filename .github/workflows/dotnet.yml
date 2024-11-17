@@ -15,13 +15,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
+
       - name: Install Aspirate
         run: dotnet tool install -g aspirate --prerelease
+
       - name: Aspirate Build (build and push images)
+        if: ${{ false }}
         run: |
           aspirate build -m ./manifest.json \
           --non-interactive \
@@ -30,6 +34,19 @@ jobs:
           --container-image-tag=${{ github.run_number }} \
           --container-registry=docker.io
         working-directory: ./aspire/CarvedRock-Aspire.AppHost
+        env:
+          SDK_CONTAINER_REGISTRY_UNAME: dahlsailrunner
+          SDK_CONTAINER_REGISTRY_PWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: .NET Publish API container
+        run: |
+          dotnet publish /t:PublishContainer \
+          --os linux \
+          --arch x64 \
+          -p ContainerRegistry=docker.io \
+          -p ContainerRepository=dahlsailrunner/carvedrock-api \
+          -p ContainerImageTag=${{ github.run_number }}
+        working-directory: ./aspire/CarvedRock.Api
         env:
           SDK_CONTAINER_REGISTRY_UNAME: dahlsailrunner
           SDK_CONTAINER_REGISTRY_PWORD: ${{ secrets.DOCKER_PASSWORD }}

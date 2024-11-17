@@ -5,24 +5,31 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      - name: Install Aspirate
+        run: dotnet tool install -g aspirate --prerelease
+      - name: Aspirate Build (build and push images)
+        run: |
+          aspirate build -m ./manifest.json \
+          --non-interactive \
+          --disable-secrets \
+          --container-repostiory-prefix=dahlsailrunner \
+          --container-image-tag=${{ github.run_number }} \
+          --container-registry=docker.io
+        working-directory: ./aspire/CarvedRock-Aspire.AppHost
+        env:
+          SDK_CONTAINER_REGISTRY_UNAME: dahlsailrunner
+          SDK_CONTAINER_REGISTRY_PWORD: ${{ secrets.DOCKER_PASSWORD }}

@@ -3,6 +3,8 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
+name: $(Date:yyyyMMdd)$(Rev:r)
+
 trigger:
 - main
 
@@ -28,7 +30,7 @@ steps:
       --non-interactive \
       --disable-secrets \
       --container-repostiory-prefix=dahlsailrunner \
-      --container-image-tag=$(Build.BuildId) \
+      --container-image-tag=$(Build.BuildNumber) \
       --container-registry=docker.io
     workingDirectory: './aspire/CarvedRock-Aspire.AppHost'
   env:

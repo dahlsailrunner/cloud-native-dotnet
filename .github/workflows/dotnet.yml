@@ -21,11 +21,12 @@ jobs:
         with:
           dotnet-version: 8.x
 
+      ## optional - use aspirate to publish based on app host
+      ## repository names come from prefix below and service name string in app host
       - name: Install Aspirate
         run: dotnet tool install -g aspirate --prerelease
 
       - name: Aspirate Build (build and push images)
-        if: ${{ false }}
         run: |
           aspirate build -m ./manifest.json \
           --non-interactive \
@@ -38,7 +39,10 @@ jobs:
           SDK_CONTAINER_REGISTRY_UNAME: dahlsailrunner
           SDK_CONTAINER_REGISTRY_PWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+      # optional -- manually publish with dotnet publish.
+      # repeat for all three images
       - name: .NET Publish API container
+        if: ${{ false }}
         run: |
           dotnet publish /t:PublishContainer \
           --os linux \

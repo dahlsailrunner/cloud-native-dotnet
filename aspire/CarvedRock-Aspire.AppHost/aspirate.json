@@ -2,7 +2,6 @@
   "TemplatePath": null,
   "ContainerSettings": {
     "Registry": "carvedrock.azurecr.io",
-    "RepositoryPrefix": "carvedrock",
     "Tags": ["latest"],
     "Builder": "docker"
   }

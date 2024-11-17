@@ -2,13 +2,13 @@
   "projectPath": ".",
   "outputPath": "./k8s",
   "namespace": "carvedrock",
-  "containerRegistry": "carvedrock.azurecr.io",
+  "containerRegistry": "docker.io",
   "containerImageTags": [
-    "1.0.0"
+    "20241117.1"
   ],
   "imagePullPolicy": "Always",
   "containerBuilder": "docker",
-  "containerRepositoryPrefix": "carvedrock",
+  "containerRepositoryPrefix": "dahlsailrunner",
   "outputFormat": "kustomize",
   "disableSecrets": true,
   "skipFinalKustomizeGeneration": false,

@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Resilience" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
     <PackageReference Include="System.Formats.Asn1" />

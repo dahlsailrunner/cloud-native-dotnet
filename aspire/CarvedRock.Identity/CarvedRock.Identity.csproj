@@ -11,6 +11,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Duende.IdentityServer" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+		<PackageReference Include="Serilog.AspNetCore" />
 		<PackageReference Include="System.Formats.Asn1" />
 	</ItemGroup>
 

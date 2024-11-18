@@ -3,14 +3,14 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.1" />
-    <PackageVersion Include="Aspire.Hosting.AppHost" Version="8.2.1" />
-    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="8.2.1" />
+    <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.2" />
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="9.0.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.OpenIdConnectServer" Version="8.0.1" />
     <PackageVersion Include="AutoMapper" Version="13.0.1" />
-    <PackageVersion Include="Azure.Identity" Version="1.12.1" />
-    <PackageVersion Include="Duende.IdentityServer" Version="7.0.7" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+    <PackageVersion Include="Azure.Identity" Version="1.13.1" />
+    <PackageVersion Include="Duende.IdentityServer" Version="7.0.8" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageVersion Include="IdentityModel" Version="7.0.0" />
     <PackageVersion Include="MailKit" Version="4.8.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
@@ -19,11 +19,11 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.11" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.6" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.9.1" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Resilience" Version="8.9.1" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.2.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
@@ -33,15 +33,14 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.7" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
-    <PackageVersion Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="8.0.3" />
     <PackageVersion Include="Serilog.Enrichers.Span" Version="3.1.0" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageVersion Include="Serilog.Sinks.Seq" Version="8.0.0" />
     <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.1.1" />
-    <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.1" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.8.1" />
-	<!-- Due to "package with known vulnerability" - added explicit ref below -->
+    <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="7.0.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+    <!-- Due to "package with known vulnerability" - added explicit ref below -->
     <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
-	
   </ItemGroup>
 </Project>

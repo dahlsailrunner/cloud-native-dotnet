@@ -2,25 +2,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: carvedrock-api
+  name: carvedrock-webapp
   labels:
-    app: carvedrock-api
+    app: carvedrock-webapp
 spec:
   minReadySeconds: 60
   replicas: 1
   selector:
     matchLabels:
-      app: carvedrock-api
+      app: carvedrock-webapp
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: carvedrock-api
+        app: carvedrock-webapp
     spec:
       containers:
-      - name: carvedrock-api
-        image: knowyourtoolset/carvedrock-api:latest
+      - name: carvedrock-webapp
+        image: dahlsailrunner/carvedrock-webapp:latest
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -36,7 +36,7 @@ spec:
             cpu: "250m"
         envFrom:
         - configMapRef:
-            name: carvedrock-api-env
+            name: carvedrock-webapp-env
         - secretRef:
-            name: carvedrock-api-secrets
+            name: otel-token
       terminationGracePeriodSeconds: 180

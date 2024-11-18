@@ -1,0 +1,11 @@
+namespace: carvedrock
+
+resources:
+- carvedrock-api
+- carvedrock-webapp
+- namespace.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+

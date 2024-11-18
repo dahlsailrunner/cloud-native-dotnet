@@ -41,10 +41,10 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cr-id-local.key
 ## 2. Create a Kubernetes TLS Secret
 
 ```bash
-kubectl create secret tls cr-identity-tls --cert=cr-id-local.crt --key=cr-id-local.key -n kyt-app
+kubectl create secret tls cr-identity-tls --cert=cr-id-local.crt --key=cr-id-local.key -n carvedrock
 ```
 
-## Update the Identity Ingress to Use the secret
+## 3. Update the Identity Ingress to Use the secret
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -76,5 +76,26 @@ Make sure to apply the changes!  `aspirate apply`
 
 ## 3. Trust the Certificate
 
-hosts file entry
 import crt into trusted root authorities
+
+## 4. The Rabbit Hole
+
+If we really wanted to get this entire application working, we'd need to update the
+webapp and api containers -- they would both need to:
+
+* Have the `crt` file added to the container image and trusted
+* Get a dns entry created for the external endpoint
+
+OR
+
+We could set up a certificate on the identity server itself
+and then trust it inside the container images.
+
+Either way is beyond the scope of this course, code, and exercise.
+
+Using a real identity server would most often be deployed into a
+production or more real cluster that provides both certificate management
+and dns management.
+
+Then you would simply use configuration and / or secrets using the same
+techniques we've already seen and will continue to see.

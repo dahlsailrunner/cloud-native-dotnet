@@ -1,8 +1,11 @@
 {
   "TemplatePath": null,
   "ContainerSettings": {
-    "Registry": "carvedrock.azurecr.io",
-    "Tags": ["latest"],
+    "Registry": null,
+    "RepositoryPrefix": "dahlsailrunner",
+    "Tags": [
+      "latest"
+    ],
     "Builder": "docker"
   }
 }

@@ -27,6 +27,13 @@ spec:
           containerPort: 8080
         - name: https
           containerPort: 8443
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
         envFrom:
         - configMapRef:
             name: carvedrock-identity-env

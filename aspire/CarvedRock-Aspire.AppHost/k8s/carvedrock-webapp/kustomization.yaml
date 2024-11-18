@@ -1,0 +1,39 @@
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: carvedrock-webapp-env
+  literals:
+    - OTEL_SERVICE_NAME=carvedrock-webapp
+    - OTEL_RESOURCE_ATTRIBUTES=service.version=1.0.0,service.namespace=carvedrock,deployment.environment=local
+    - OTEL_EXPORTER_OTLP_ENDPOINT=https://0146b894b1694cbc8d202a83a14e1efb.apm.us-central1.gcp.cloud.es.io
+    - OTEL_METRICS_EXPORTER=otlp
+    - OTEL_LOGS_EXPORTER=otlp
+    - OTEL_BLRP_SCHEDULE_DELAY=1000
+    - OTEL_BSP_SCHEDULE_DELAY=1000
+    - OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION=true
+    - OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY=in_memory
+    - OTEL_METRICS_EXEMPLAR_FILTER=trace_based
+    - OTEL_METRIC_EXPORT_INTERVAL=1000
+    - OTEL_EXPORTER_OTLP_PROTOCOL=grpc    
+    - OTEL_TRACES_SAMPLER=always_on
+    - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+    - HTTP_PORTS=8080
+    - services__carvedrock-api__http__0=http://carvedrock-api:8080
+    - Serilog__MinimumLevel__Default=Information
+    - Serilog__MinimumLevel__Override__Microsoft=Warning
+    - Serilog__MinimumLevel__Override__Microsoft.Hosting=Information
+    - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore.Database.Command=Information
+    - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore.Query=Information
+    - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore.Update=Information
+    - ConnectionStrings__smtp-4-dev=smtp://smtp-4-dev:25
+    - ASPNETCORE_URLS=http://+:8080;
+

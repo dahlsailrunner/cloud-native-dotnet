@@ -11,7 +11,7 @@ using CarvedRock.Domain.Mapping;
 using FluentValidation;
 using CarvedRock.Core;
 
-var builder = WebApplication.CreateBuilder(args);        
+var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults(); // serilog configured inside here
 
 builder.Services.AddProblemDetails(opts => // built-in problem details support
@@ -57,6 +57,9 @@ builder.Services.AddScoped<IProductLogic, ProductLogic>();
 //    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
 builder.AddNpgsqlDbContext<LocalContext>("CarvedRockPostgres");
+var connStr = builder.Configuration.GetConnectionString("CarvedRockPostgres");
+
+Console.WriteLine($"Connection string: {connStr}");
 
 // SQL Server ---------------------------
 //builder.Services.AddDbContext<LocalContext>(options => options
@@ -82,7 +85,7 @@ app.UseExceptionHandler();
 
 //if (app.Environment.IsDevelopment())
 //{
-    SetupDevelopment(app);
+SetupDevelopment(app);
 //}
 
 app.UseAuthentication();

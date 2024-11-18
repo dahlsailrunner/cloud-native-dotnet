@@ -2,11 +2,10 @@
   "projectPath": ".",
   "outputPath": "./k8s",
   "namespace": "carvedrock",
-  "containerRegistry": "docker.io",
   "containerImageTags": [
-    "20241117.1"
+    "latest"
   ],
-  "imagePullPolicy": "Always",
+  "imagePullPolicy": "IfNotPresent",
   "containerBuilder": "docker",
   "containerRepositoryPrefix": "dahlsailrunner",
   "outputFormat": "kustomize",
@@ -14,5 +13,10 @@
   "skipFinalKustomizeGeneration": false,
   "privateRegistryEmail": "aspir8@aka.ms",
   "includeDashboard": false,
-  "useCustomNamespace": true
+  "useCustomNamespace": true,
+  "secrets": {
+    "salt": "nzjQj6HBlDkwCgaT",
+    "hash": "d\u002Bw36hv7R39qkoDoMSowXZwRsjMZrytAlKd4OE6rpLk=",
+    "secrets": {}
+  }
 }

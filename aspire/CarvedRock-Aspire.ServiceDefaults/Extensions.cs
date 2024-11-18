@@ -89,7 +89,7 @@ public static class Extensions
                 {
                     options.FilterHttpRequestMessage = (request) =>
                     {
-                        return !request.RequestUri?.ToString().Contains("getScriptTag", 
+                        return !request.RequestUri?.ToString().Contains("getScriptTag",
                             StringComparison.InvariantCultureIgnoreCase) ?? true;
                     };
                 });
@@ -118,7 +118,7 @@ public static class Extensions
 
         return builder;
     }
-    
+
     public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
     {
         builder.Services.AddRequestTimeouts();
@@ -159,6 +159,7 @@ public static class Extensions
                 {
                     options.Endpoint = otlpExporterEndpoint;
                     options.ResourceAttributes.Add("service.name", builder.Configuration["OTEL_SERVICE_NAME"]!);
+                    options.ResourceAttributes.Add("service.instance.id", Environment.MachineName);
                     var headers = builder.Configuration["OTEL_EXPORTER_OTLP_HEADERS"]?.Split(',') ?? [];
                     foreach (var header in headers)
                     {
@@ -176,7 +177,7 @@ public static class Extensions
 
     public static WebApplication MapDefaultEndpoints(this WebApplication app)
     {
-        
+
 
         var healthChecks = app.MapGroup("");
 

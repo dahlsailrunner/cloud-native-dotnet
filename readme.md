@@ -481,7 +481,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 ### Generate "Initial" Kubernetes manifests
 
 ```powershell
-aspirate generate --skip-build --output-path=./k8s --namespace=carvedrock --container-image-tag=1.0.0 --container-registry=carvedrock.azurecr.io --container-repository-prefix carvedrock --image-pull-policy IfNotPresent --disable-secrets --disable-state --include-dashboard false  
+aspirate generate --output-path=./k8s --namespace=carvedrock --image-pull-policy IfNotPresent --disable-secrets --include-dashboard false 
 ```
 
 Choose the services you want.  Eliminate command line options and provide them interactively if you like.
@@ -490,11 +490,30 @@ Then make updates to the files in prep for a real deployment.
 
 I updated:
 
-* Image names in `deployment.yaml` files (not using a container registry)
 * Added resource limits in `deployment.yaml` files with copilot (starting points for them, anyway)
 * Added `ingress.yaml` file to `webapp` and updated `kustomization.yaml` to include it
 * Removed the `ConnectionStrings__CarvedRockPostgres` value from the api `kustomization.yaml` file (it
-was added since I had user secrets set locally)
+was added since I disabled secret handling)
+* Add the various non-secret `OTEL` value to the `kustomization` files for the web app and the api:
+
+```yaml
+    - OTEL_SERVICE_NAME=carvedrock-api
+    - OTEL_RESOURCE_ATTRIBUTES=service.version=1.0.0,service.namespace=carvedrock,deployment.environment=local
+    - OTEL_EXPORTER_OTLP_ENDPOINT=https://0146b894b1694cbc8d202a83a14e1efb.apm.us-central1.gcp.cloud.es.io
+    - OTEL_METRICS_EXPORTER=otlp
+    - OTEL_LOGS_EXPORTER=otlp
+    - OTEL_BLRP_SCHEDULE_DELAY=1000
+    - OTEL_BSP_SCHEDULE_DELAY=1000
+    - OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_DISABLE_URL_QUERY_REDACTION=true
+    - OTEL_DOTNET_EXPERIMENTAL_HTTPCLIENT_DISABLE_URL_QUERY_REDACTION=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES=true
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY=in_memory
+    - OTEL_METRICS_EXEMPLAR_FILTER=trace_based
+    - OTEL_METRIC_EXPORT_INTERVAL=1000
+    - OTEL_EXPORTER_OTLP_PROTOCOL=grpc    
+    - OTEL_TRACES_SAMPLER=always_on
+```
 
 Manually apply namespace (it's a one-time thing) to be able to create secrets in the namespace:
 
@@ -502,10 +521,12 @@ Manually apply namespace (it's a one-time thing) to be able to create secrets in
 kubectl apply -f ./k8s/namespace.yaml
 ```
 
-Create a secret for the postgres database connection string:
+Create a secret for the postgres database connection string and another for the OTEL remote service token:
 
 ```bash
 kubectl create secret generic postgres-connstr -n carvedrock --from-literal=ConnectionStrings__CarvedRockPostgres="Host=34.56.7.194;Database=carvedrock;Username=postgres;Password=0JA}mP-UDxS9}#Gq;"
+
+kubectl create secret generic otel-token -n carvedrock --from-literal=OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer RaemoVEmPNVMlSAwRv"
 ```
 
 Add a reference to the secrets in the `-envFrom` section of the deployment manifests:

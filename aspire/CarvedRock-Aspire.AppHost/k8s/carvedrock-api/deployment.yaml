@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: carvedrock-api
-        image: knowyourtoolset/carvedrock-api:latest
+        image: dahlsailrunner/carvedrock-api:latest
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -38,5 +38,7 @@ spec:
         - configMapRef:
             name: carvedrock-api-env
         - secretRef:
-            name: carvedrock-api-secrets
+            name: postgres-connstr
+        - secretRef:
+            name: otel-token
       terminationGracePeriodSeconds: 180
